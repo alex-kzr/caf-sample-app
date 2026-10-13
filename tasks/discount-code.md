@@ -17,9 +17,22 @@ Task prompt for the coding agent:
 
 ## Commands
 
+Bash:
+
 ```sh
-uv run --offline python -m unittest discover -s tests -p 'test_baseline.py'
-uv run --offline python -m unittest discover -s tests -p 'test_discount_code.py'
+PYTHONPATH=src python -m unittest discover -s tests -p 'test_baseline.py'
+PYTHONPATH=src python -m unittest discover -s tests -p 'test_discount_code.py'
 ```
+
+PowerShell:
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path ./src).Path
+python -m unittest discover -s tests -p test_baseline.py
+python -m unittest discover -s tests -p test_discount_code.py
+Remove-Item Env:PYTHONPATH
+```
+
+Use an installed Python 3.12+ interpreter. These commands use only the standard library and checked-out source, without installing the project or using a dependency cache. If `python` is not on PATH, substitute `uv run --no-project --offline --python 3.12 python` (or another installed version) for `python`.
 
 Before the coding change, the first command must pass and the second must fail because `quote_order` has no `discount_code` parameter. A successful coding change makes both pass. Use the same base commit for all experimental modes and record each mode's resulting commit separately.
